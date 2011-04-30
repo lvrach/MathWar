@@ -50,7 +50,12 @@ double extval(struct DIGIT x)
 	
 }
 
-
+int oper_cost(int operator,int number)
+{
+	/* gets operator id return cost */
+	return number*oper[operator].factor[1]*oper[operator].res+number*oper[operator].factor[0];
+		
+}
 
 int intvar(char c){
 	int i;
@@ -110,4 +115,18 @@ double fsolver(int p,int f)
 			
 	}
 	return S;
+}
+
+void additor(int play,int fun,struct DIGIT new){
+	
+	player[play].load_f=fun;
+	
+	if(!new.operant){
+		player[play].load=oper_cost(new.operator,new.operant);
+	}else{
+		player[play].load=oper[new.operator].sres ;
+	}
+	player[play].new_fuct=new;
+	
+  return;
 }

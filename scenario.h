@@ -21,24 +21,7 @@ void solver(){
 
 }
 
-void additor(int p,int f,int op,int opn){
-	player[p].load_f=f;
-	if(opn<10){
-		player[p].load=(opn*oper[op].res*oper[op].factor[1])+(opn*oper[op].factor[0]);
-	}else{
-		player[p].load=oper[op].sres ;	
-	}
-	if(opn<10){
-		player[p].new_fuct.value=opn;
-		player[p].new_fuct.operant=0;
-	}else{
-		player[p].new_fuct.value=0;
-		player[p].new_fuct.operant=opn-9;
-	}
-		player[p].new_fuct.operator=op;
-	
-  return;
-}
+
 
 void loadsettings(){
  // load operators
@@ -91,3 +74,106 @@ void turn_engine(){
 	}	
 	return;	
 }
+
+
+int editor_menu(int play_num,int fun){
+	/* this function gets player and FUNction player.
+	 * It's got interface for helping the gamers to select 
+	 * whatever they want to edit to their function
+	*/
+		
+	/*if you want to go a step back in fun selection
+	 *  (it is not included in this header)	
+	 * return -1;
+	 *if you want to skip ,and go to the next player
+	 * (or next num if their is not anyone)
+	 * return 1;
+	 */
+	char temps[10];//temp string
+	int i,j; 
+	struct DIGIT new_digit;
+	
+		operator_select:	
+		printf("now select an operator:\n");
+		for(i=0;i<maxoper;i++)
+		{
+			printf("%c \t %s \n",oper[i].symbol,oper[i].name);
+			
+		}
+		for(;;)
+		{	
+			printf("select>");	
+			scanf("%s",temps);
+				if(temps[0]=='b')
+				{
+					return -1; // a step back
+				}
+				else if(temps[0]=='\n') //if press enter
+				{
+					return 1; // next player/turn
+				}
+			
+				else{
+					if(intopr(temps[0])<maxoper) // check if it is valid 
+					{
+						new_digit.operator=intopr(temps[0]);
+						break;
+					}
+				
+				}
+			
+		}
+		clean();
+		//operant selection
+		printf("You have select %s operator \n",oper[new_digit.operator].name);
+		printf("Now select an operant number:\n");
+		printf("operant  ,cost(turns to load)\n");
+		for(j=0;j<10;j++)
+		{
+			printf("%i \t, %i",j,oper_cost(new_digit.operator,j));
+			printf("(%i)\n",(oper_cost(new_digit.operator,j)/player[play_num].res)+((oper_cost(new_digit.operator,j)%player[play_num].res)?0:1));		
+		}
+		for(i=0;i<maxvar;i++)
+		{
+			printf("%c \t\t%i\n",var[i].symbol,100);//(oper[new_digit.operator].sres%player[player].res)?(oper[new_digit.operator].sres/player[player].res)+1:oper[new_digit.operator].sres/player[player].res);
+		}
+		
+			
+		for(;;)
+		{
+			printf("select>");	
+			scanf("%s",temps);
+			if(temps[0]=='b')
+			{
+				goto operator_select;
+			}
+			else if(temps[0]=='\n')
+			{
+				return 1;
+			}
+			/*if looks if it is any other alphabetic  (also protect atoi)
+			 * but looks just the first char ,as above ifs so it need extension 
+			 */			 
+			else if(isalpha(temps[0]))
+			{
+				if(intvar(temps[0])<=maxvar)//use <= because variables start from 1 not from 0 ,because 0 defines number.
+				{
+					new_digit.operant=intvar(temps[0]);
+					break;
+				}
+			}
+			else 
+			/*now we can extract any number we want and check it
+			 */
+			{	
+				if(atoi(temps)<10){
+					new_digit.operant=0;// 0 to say that is not a variable but a value 
+					new_digit.value=atoi(temps);
+					break;
+				}
+			}
+		}
+				      
+		additor(play_num,fun,new_digit);//additor can now get a DIGIT insted of operator,operand 
+		return 0;
+	}

@@ -1,0 +1,11 @@
+5
++ add 10 0 2 100
+- removal 10 0 5 100
+* multiple 50 1 10 1000
+/ division 1000 0 -20 250
+^ power 200 10 10 1000
+4
+t turn_number
+r random_number_[0,1]
+R random_number_[-10,10]
+c static_number_randomly_defined_[0,10) 
