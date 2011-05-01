@@ -4,11 +4,12 @@ void solver(){
 	//for every sub function for each player
 	for(p=1;p <= 2;p++){
 		S=0;
-		for(i=0;i< player[p].ul_fuct;i++){//sub fuction loop
+		for(i=0;i< player[p].ul_fun;i++){//sub function loop
 			for(l=0;l<player[p].fcount[i];l++){//digit lopp
-				if(!player[p].fuct[i][l].operant){
-					if(player[p].fuct[i][l].operant==4){ //4=c
-						player[p].fuct[i][l].value=rand()%10;	
+				if(!player[p].fun[i][l].operand){
+					
+		if(player[p].fun[i][l].operand==4){ //4=c
+						player[p].fun[i][l].value=rand()%10;	
 					}
 				}
 			}
@@ -20,9 +21,6 @@ void solver(){
 	
 
 }
-
-
-
 void loadsettings(){
  // load operators
  int i;
@@ -35,10 +33,10 @@ void loadsettings(){
  for(i=0;i<maxoper;i++){
 	 fscanf(foperators,"%c %s %i %i %i %i \n",&oper[i].symbol,
 												oper[i].name,												
-												&oper[i].res,
-												&oper[i].factor[0],
-												&oper[i].factor[1],
-												&oper[i].sres);
+												&oper[i].cost_base,
+												&oper[i].cost_factor[0],
+												&oper[i].cost_factor[1],
+												&oper[i].cost_var);
 	}
 fscanf(foperators,"%i\n",&maxvar);
  if(!maxvar) exit(1);	
@@ -60,7 +58,7 @@ void turn_engine(){
 			if(player[p].load<=0){
 				player[p].load=0;
 				player[p].load_f=-1;
-			player[p].fuct[f][player[p].fcount[f]]=player[p].new_fuct;
+			player[p].fun[f][player[p].fcount[f]]=player[p].new_fun;
 			player[p].fcount[f]++;
 			}
 			
@@ -135,7 +133,7 @@ int editor_menu(int play_num,int fun){
 		}
 		for(i=0;i<maxvar;i++)
 		{
-			printf("%c \t\t%i\n",var[i].symbol,100);//(oper[new_digit.operator].sres%player[player].res)?(oper[new_digit.operator].sres/player[player].res)+1:oper[new_digit.operator].sres/player[player].res);
+			printf("%c \t\t%i\n",var[i].symbol,100);//(oper[new_digit.operator].cost_var%player[player].res)?(oper[new_digit.operator].cost_var/player[player].res)+1:oper[new_digit.operator].cost_var/player[player].res);
 		}
 		
 			
@@ -158,7 +156,7 @@ int editor_menu(int play_num,int fun){
 			{
 				if(intvar(temps[0])<=maxvar)//use <= because variables start from 1 not from 0 ,because 0 defines number.
 				{
-					new_digit.operant=intvar(temps[0]);
+					new_digit.operand=intvar(temps[0]);
 					break;
 				}
 			}
@@ -167,13 +165,13 @@ int editor_menu(int play_num,int fun){
 			 */
 			{	
 				if(atoi(temps)<10){
-					new_digit.operant=0;// 0 to say that is not a variable but a value 
+					new_digit.operand=0;// 0 to say that is not a variable but a value 
 					new_digit.value=atoi(temps);
 					break;
 				}
 			}
 		}
 				      
-		additor(play_num,fun,new_digit);//additor can now get a DIGIT insted of operator,operand 
+		add_digit(play_num,fun,new_digit);//additor can now get a DIGIT insted of operator,operand 
 		return 0;
 	}

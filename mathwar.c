@@ -23,6 +23,7 @@
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
+#include <time.h>
 #include "data.h"
 #include "funtls.h"
 #include "facex.h"
@@ -60,8 +61,8 @@ int local_multi(){
 	player[2].lvl=1;
 	player[1].res=10;
 	player[2].res=10;
-	player[1].ul_fuct=0;
-	player[2].ul_fuct=0;
+	player[1].ul_fun=0;
+	player[2].ul_fun=0;
 	player[1].value=0;
 	player[2].value=0;
 	player[1].area=0;
@@ -83,10 +84,10 @@ int local_multi(){
 			opn=intvar(tempa);		
 		}while(!(opn<maxvar));
 		
-		player[p].fuct[0][0].operant=opn;
-		player[p].fuct[0][0].operator=0;
-		player[p].fuct[0][0].value=0;
-		player[p].ul_fuct=1;
+		player[p].fun[0][0].operand=opn;
+		player[p].fun[0][0].operator=0;
+		player[p].fun[0][0].value=0;
+		player[p].ul_fun=1;
 		player[p].fcount[0]=1;
 	}
 	
@@ -108,7 +109,7 @@ int local_multi(){
 		clean();
 	//end
 	
-	/*players fuction setup
+	/*players function setup
 	 *start                 */	
 	 for(p=1;p<=2;p++){//player loop
 	 printf("%s are you ready?(just press enter)",player[p].name);
@@ -118,12 +119,12 @@ int local_multi(){
 		printf("|%s is your turn\n",player[p].name);
 		printf("|press enter to skip\n");
 		printf("|press h for help or o for options\n");
-		printf("|choose number of a fuction to edit\n");
+		printf("|choose number of a function to edit\n");
 	    /* * * * * * * * * * * * *
 		 *select function ::start
 	     */	
 		select_fun: //label 
-		for(i=0;i<player[p].ul_fuct;i++){
+		for(i=0;i<player[p].ul_fun;i++){
 			printf("%i. f%i(t)=",i,i);
 			fviewer(p,i);	
 			printf("\n");
@@ -142,7 +143,7 @@ int local_multi(){
 					goto startturn;
 				}			
 				f=tempa-'0';
-			}while(!(f<player[p].ul_fuct));
+			}while(!(f<player[p].ul_fun));
 			
 			go=editor_menu(p,f);
 			if(go>0){
@@ -178,7 +179,7 @@ int local_multi(){
 
 int main(int argc, char **argv)
 {
-
+	intro();
 	char choice;	
 	mainmenu:
 	clean();
