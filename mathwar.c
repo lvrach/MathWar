@@ -1,6 +1,6 @@
-//      mathwar.symbol
+//      mathwar.c
 //      
-//      Copyright 2011 <xalgra@titanix>
+//      Copyright 2011 xal.gra@gmail.com
 //      
 //      This program is free software; you can redistribute it and/or modify
 //      it under the terms of the GNU General Public License as published by
@@ -39,111 +39,126 @@ void help()
 
 void options(){
 	clean();
+	printf(" %s give name :" ,player[0].name);
+	scanf("%s",player[0].name);	
 	printf(" %s give name :" ,player[1].name);
-	scanf("%s",player[1].name);	
-	printf(" %s give name :" ,player[2].name);
-	scanf("%s",player[2].name);		
+	scanf("%s",player[1].name);		
 
 }
 
-int local_multi(){
-	int f,go,opn;
+int local_multi(int players){
+	/*local multi-player game mode
+	 *multiple  players fight for defined turns
+	 *Winner is the one whose area of his function is bigger
+	 *return 0 for going to main menu
+	 *return 1 to close the game
+	 */
+	maxplayer=players;
+	int f,go;
 	int i,p;
-	char tempa;
+	char temps[10];
+	loadsettings("mathwar.oper");//load settings from file with give name	
+	load_safe();//load setting but not from file
 	
-	//initalization
-	loadsettings();
-	
-	strcpy(player[1].name,"player 1");
-	
-	strcpy(player[2].name,"player 2");
-	player[1].lvl=1;
-	player[2].lvl=1;
-	player[1].res=10;
-	player[2].res=10;
-	player[1].ul_fun=0;
-	player[2].ul_fun=0;
-	player[1].value=0;
-	player[2].value=0;
-	player[1].area=0;
-	player[2].area=0;
-	player[1].load_f=-1;
-	player[2].load_f=-1;
-	player[1].load=0;
-	player[2].load=0;
-	
-	printf("select your first variable(0-%i):\n",maxvar-1);
-	for(i=0;i<maxvar;i++){
-		printf("%c \t %s \n",var[i].symbol,var[i].desc);
-	}
-	for(p=1;p<=2;p++){
-		do{
-			printf("%s select>",player[p].name);
-			scanf(" %c",&tempa);
-			
-			opn=intvar(tempa);		
-		}while(!(opn<maxvar));
+	/*players must select the first variable to add to their function ,
+	 * players wont wait to be added in function 
+	 */ 
+	first_var_select:
+	clean();
+	printf("select your first variable:\n");
+		for(i=0;i<maxvar;i++)
+		{	
+			printf("%c \t %s \n",var[i].symbol,var[i].desc);
+		}
+		for(p=0;p<maxplayer;p++)
+		{
 		
-		player[p].fun[0][0].operand=opn;
-		player[p].fun[0][0].operator=0;
-		player[p].fun[0][0].value=0;
-		player[p].ul_fun=1;
-		player[p].fcount[0]=1;
-	}
+			for(;;)
+			{
+			printf("%s select:",player[p].name);
+			scanf("%s",temps);
+				if(isalpha(temps[0]))
+				{
+					if(intvar(temps[0])<=maxvar)//use <= because variables start from 1 not from 0 ,because 0 defines number.
+					{
+						f=player[p].fun_num-1;
+						player[p].fun[f][player[p].fpoint[f]].operand=intvar(temps[0]);
+						player[p].fpoint[f]+=1;
+						break;
+					}
+				}
+				
+				goto first_var_select;
+				printf("go to error");
+				
+			}	
+			
+		
+		}
 	
 	
 	
 	while(winner==0 && turns<=maxturns){
-     /*pre battle 
-      * start */
+    
 	turn_engine();	
 	solver();      
-	//finish
-	/*battle resolts
-	 *start */	
+		
 		clean();
-		getchar();				
+						
 		playerbar();		
 		getchar();
 		
 		clean();
-	//end
 	
-	/*players function setup
-	 *start                 */	
-	 for(p=1;p<=2;p++){//player loop
-	 printf("%s are you ready?(just press enter)",player[p].name);
-	 getchar();
+	 for(p=0;p<2;p++){
+	
 	 clean();
 	 startturn:
 		printf("|%s is your turn\n",player[p].name);
-		printf("|press enter to skip\n");
-		printf("|press h for help or o for options\n");
+		printf("|s to skip\n");
+		printf("|h for help \no for options\n");
 		printf("|choose number of a function to edit\n");
-	    /* * * * * * * * * * * * *
-		 *select function ::start
-	     */	
-		select_fun: //label 
-		for(i=0;i<player[p].ul_fun;i++){
+	   
+		select_fun: 
+		for(i=0;i<player[p].fun_num;i++){
 			printf("%i. f%i(t)=",i,i);
 			fviewer(p,i);	
 			printf("\n");
-			do{	
+				
+			for(;;)
+			{	
 				printf("select>");	
-				scanf("%c",&tempa);
-				if(tempa=='\n'){
+				scanf("%s",temps);
+				if(temps[0]=='s')
+				{
 					goto endturn;
-				}else if(tempa=='h'){
+				}
+				else if(temps[0]=='h')
+				{
 					help();
 					clean();
 					goto startturn;
-				}else if(tempa=='o'){
-					help();
+				}
+				else if(temps[0]=='o')
+				{
 					options();
+					clean();
 					goto startturn;
+				}
+				else if(temps[0]=='i')
+				{
+					player_info(p);					
+					clean();
+					goto startturn;				
+				}
+				else if(isdigit(temps[0]))
+				{
+					
+					f=temps[0]-'0';
+					break;
 				}			
-				f=tempa-'0';
-			}while(!(f<player[p].ul_fun));
+				
+			}
 			
 			go=editor_menu(p,f);
 			if(go>0){
@@ -153,23 +168,20 @@ int local_multi(){
 			}
 		}		
 		
-		endturn: //end turn with out edit functions
-		getchar();
+		endturn: 
+		
 		clean();
 		
 	}
-	//end
 	
-	/*turn commands 
-	 *start */	
 		turns++;
 		
-	//end	
+	
 	}
-	if(player[1].area>player[2].area){
+	if(player[0].area>player[1].area){
+		printf("%s Wins",player[0].name);
+	}else if(player[1].area>player[0].area){
 		printf("%s Wins",player[1].name);
-	}else if(player[2].area>player[1].area){
-		printf("%s Wins",player[2].name);
 	}else{
 		printf("Draw");
 	}
@@ -179,6 +191,7 @@ int local_multi(){
 
 int main(int argc, char **argv)
 {
+	int go;
 	intro();
 	char choice;	
 	mainmenu:
@@ -201,7 +214,10 @@ int main(int argc, char **argv)
 	else if(choice=='l')
 	{
 		clean();
-		local_multi();
+		go=local_multi(2);
+		if(go>0){
+			return 0;
+		}
 		goto mainmenu;		
 	}
 	else if(choice=='q')

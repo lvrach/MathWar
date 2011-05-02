@@ -53,8 +53,8 @@ double extval(struct DIGIT x)
 int oper_cost(int operator,int number)
 {
 	/* gets operator id return cost */
-	return number*oper[operator].cost_factor[1]*oper[operator].cost_base+number*oper[operator].cost_factor[0];
-		
+	return number*oper[operator].cost_factor[1]+number*oper[operator].cost_factor[0];
+	
 }
 
 int intvar(char c){
@@ -89,7 +89,7 @@ double fsolver(int p,int f)
 	S=extval(player[p].fun[f][0]);
 	
 	
-	for(i=1;i<player[p].fcount[f];i++)
+	for(i=1;i<player[p].fpoint[f];i++)
 	{
 		
 		switch (player[p].fun[f][i].operator)
@@ -121,11 +121,11 @@ void add_digit(int play_num,int fun,struct DIGIT new){
 	/*
 	 * 
 	 * */
-	player[play_num].load_f=fun;
+	player[play_num].load_point=fun;
 	
 	if(!new.operand)
 	{
-		player[play_num].load=oper_cost(new.operator,new.operand);
+		player[play_num].load=oper_cost(new.operator,new.value);
 	}
 	else
 	{

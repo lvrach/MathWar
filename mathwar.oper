@@ -1,11 +1,15 @@
-5
-+ add 10 0 2 100
-- removal 10 0 5 100
-* multiple 50 1 10 1000
-/ division 1000 0 -20 250
-^ power 200 10 10 1000
-4
-t turn_number
-r random_number_[0,1]
-R random_number_[-10,10]
-c static_number_randomly_defined_[0,10) 
+$oper 5
+0.+ add 10 10 100
+1.- removal 0 5 100
+2.* multiple  1 10 1000
+3./ division  0 -20 250
+4.^ power  10 10 000
+
+$var 4
+0.t turn_number
+1.r random_number_[0,1]
+2.R random_number_[-10,10]
+3.c static_number_randomly_defined_[0,10) 
+
+
+ 
