@@ -112,14 +112,16 @@ int local_multi(int players){
 	
 	 for(p=0;p<2;p++){
 	
-	 clean();
+	// clean();
 	 startturn:
-		printf("|%s is your turn\n",player[p].name);
-		printf("|s to skip\n");
-		printf("|h for help \no for options\n");
-		printf("|choose number of a function to edit\n");
+		
 	   
-		select_fun: 
+		select_fun:
+		clean();
+		printf("%s is your turn\n",player[p].name);
+		printf("s to skip,");
+		printf("h for help ,o for options\n");
+		printf("or choose number of a function to edit\n");
 		for(i=0;i<player[p].fun_num;i++){
 			printf("%i. f%i(t)=",i,i);
 			fviewer(p,i);	

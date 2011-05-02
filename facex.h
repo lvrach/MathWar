@@ -26,31 +26,8 @@ void player_info(int play){
 	getchar();
 }
 void intro(){	
-	/*int i ,j ,k , l;
-	char rand_char[]={'0','1','*','>','=','/','x','+','2','<'};	
-	* 
-	for(i=0;i<10;i++)
-	{
-		
-		for(l=0;l<25;l++)
-		{
-			printf("\033[2J");
-			if (system("cls")) system("clear");		
-		
-				for(j=0;j<3;j++)
-				{
-					
-					for(k=0;k<100;k++)
-					{
-						printf("%c",rand_char[((rand()*k)+j+1)%10]);
-					}
-					printf("\n");
-				}
-		}
-		wait(1);
-	}*/
-		printf("\033[2J");
-		if (system("cls")) system("clear");
+		//printf("\033[2J");
+		/*if (system("cls"))*/ system("clear");
 		printf("\topen source presents:");
 		wait(2);
 

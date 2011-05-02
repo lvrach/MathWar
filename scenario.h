@@ -162,6 +162,7 @@ int editor_menu(int play_num,int fun){
 	struct DIGIT new_digit;
 	
 		operator_select:	
+		clean();
 		printf("now select an operator:\n");
 		for(i=0;i<maxoper;i++)
 		{
