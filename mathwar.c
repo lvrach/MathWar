@@ -79,7 +79,7 @@ int local_multi(int players){
 			scanf("%s",temps);
 				if(isalpha(temps[0]))
 				{
-					if(intvar(temps[0])<=maxvar)//use <= because variables start from 1 not from 0 ,because 0 defines number.
+					if(intvar(temps[0])<=maxvar)//use '<=' because variables start from 1 not from 0 ,because 0 defines number.
 					{
 						f=player[p].fun_num-1;
 						player[p].fun[f][player[p].fpoint[f]].operand=intvar(temps[0]);
@@ -101,30 +101,37 @@ int local_multi(int players){
 	while(winner==0 && turns<=maxturns){
     
 	turn_engine();	
-	solver();      
-		
-		clean();
-						
+	 
+	p=0;//helps goto work     
+	playerbar:	
+		clean();						
 		playerbar();		
 		getchar();
-		
+		getchar();
 		clean();
 	
-	 for(p=0;p<2;p++){
+	 for(;p<2;p++){
 	
 	// clean();
-	 startturn:
+	 
 		
 	   
 		select_fun:
 		clean();
 		printf("%s is your turn\n",player[p].name);
-		printf("s to skip,");
-		printf("h for help ,o for options\n");
-		printf("or choose number of a function to edit\n");
+		printf("s |to skip\n");
+		printf("o |for options\n");
+		printf("i |for info about you\n");
+		printf("h |for help\n");
+		printf("b |to go step back\n");
+		printf("\tor choose number of a function to edit:\n");
 		for(i=0;i<player[p].fun_num;i++){
-			printf("%i. f%i(t)=",i,i);
-			fviewer(p,i);	
+			printf("%i |f%i=",i,i);
+			
+			fviewer(p,i);
+			if(player[p].load_point==i){
+				printf("\t (!)already adding(you will lose it)");
+			}	
 			printf("\n");
 				
 			for(;;)
@@ -138,28 +145,36 @@ int local_multi(int players){
 				else if(temps[0]=='h')
 				{
 					help();
+					getchar();
 					clean();
-					goto startturn;
+					
 				}
 				else if(temps[0]=='o')
 				{
 					options();
+					getchar();
 					clean();
-					goto startturn;
+					
 				}
 				else if(temps[0]=='i')
 				{
-					player_info(p);					
+					player_info(p);	
+					getchar();				
 					clean();
-					goto startturn;				
+								
+				}
+				else if(temps[0]=='b')
+				{
+					goto playerbar;
+								
 				}
 				else if(isdigit(temps[0]))
 				{
 					
 					f=temps[0]-'0';
-					break;
+					if(f<player[p].fun_num)	break;
 				}			
-				
+				goto select_fun;	
 			}
 			
 			go=editor_menu(p,f);

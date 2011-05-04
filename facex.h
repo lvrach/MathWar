@@ -29,28 +29,21 @@ void intro(){
 		//printf("\033[2J");
 		/*if (system("cls"))*/ system("clear");
 		printf("\topen source presents:");
-		wait(2);
+		
 
 		printf("\n\n\n\n\n");
 		printf("\t\t||\\\\    //||\n");
 		printf("\t\t|| \\\\  // || \n");
-		printf("\t\t||  \\\\//  \\|     // \n");
-		printf("\t\t||        |\\    //  \n");
-		printf("\t\t            \\/\\//   \n");		
+		printf("\t\t||  \\\\//  \\|     / \n");
+		printf("\t\t||        |\\    /  \n");
+		printf("\t\t            \\/\\/   \n");		
 		printf("\n\n \t Math-War");
 		printf("\n");
-		wait(4);		
+		wait(3);		
 		clean();	
 		wait(1);
 }
-		
-		
-		
 	
-	
-	
-
-
 void fviewer(int p,int f)
 {
 	int i;
@@ -82,7 +75,7 @@ void playerbar(){
 	printf("name[level]\t area\t loading function changes \n");
 	for(i=0;i<2;i++)
 	{
-		printf("%s [%i]\t %.2f ",player[i].name,player[i].level,player[i].area);
+		printf("%s [%i]\t %.2f \t",player[i].name,player[i].level,player[i].area);
 			if(player[i].load_point>=0)
 			{
 				printf("%i turns to insert %c",(player[i].load%player[i].work)?(player[i].load/player[i].work)+1:player[i].load/player[i].work

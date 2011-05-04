@@ -113,9 +113,6 @@ return;
 }
 
 
-
-
-
 void turn_engine()
 {
 	int p,f;
@@ -133,13 +130,16 @@ void turn_engine()
 			}
 			
 		}
-	
+	solver();
 	player[p].area+=player[p].value;
 	if(player[p].area>=10+pow(5,player[p].level)){
 		player[p].level++;
 		player[p].work*=2;
 	}
 	}	
+	
+	
+	
 	return;	
 }
 
@@ -206,7 +206,7 @@ int editor_menu(int play_num,int fun){
 		}
 		for(i=0;i<maxvar;i++)
 		{
-			printf("%c \t\t%i\n",var[i].symbol,100);//(oper[new_digit.operator].cost_var%player[player].res)?(oper[new_digit.operator].cost_var/player[player].res)+1:oper[new_digit.operator].cost_var/player[player].res);
+			printf("%c \t %i\n",var[i].symbol,100);//(oper[new_digit.operator].cost_var%player[player].res)?(oper[new_digit.operator].cost_var/player[player].res)+1:oper[new_digit.operator].cost_var/player[player].res);
 		}
 		
 			
