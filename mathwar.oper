@@ -1,3 +1,6 @@
+#for operators
+#id.sympol name Afactor Bfactor variable cost
+
 $oper 5
 0.+ add 10 10 200
 1.- removal 10 8 150
@@ -5,8 +8,10 @@ $oper 5
 3./ division 200 -10 750
 4.^ power  1000 100 10000
 
-$var 1
+$var 4
 0.t turn_number
-
+1.r random_num
+2.R random_num
+3.c random_define_num
 
  

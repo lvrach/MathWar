@@ -1,18 +1,11 @@
 void solver(){
-	int i,l,p;
+	int i,p;
 	double S;
 	//for every sub function for each player
 	for(p=0;p<2;p++){
 		S=0;
 		for(i=0;i< player[p].fun_num;i++){//sub function loop
-			for(l=0;l<player[p].fpoint[i];l++){//digit lopp
-				if(!player[p].fun[i][l].operand){
-					
-		if(player[p].fun[i][l].operand==4){ //4=c
-						player[p].fun[i][l].value=rand()%10;	
-					}
-				}
-			}
+			
 			
 			S+=fsolver(p,i);
 			}
@@ -33,6 +26,7 @@ void loadsettings(char filename[])
 		for(;;)
 		{
 			temp=getc(finput);
+				
 				if(temp=='$')
 				{
 					
@@ -97,9 +91,15 @@ void loadsettings(char filename[])
 						}
 		
 				}
+				else if(temp=='#')
+				{
+					while(getc(finput)=='\n'){
+						
+						}
+				} 
 				else if(temp==EOF)
 				{
-				break;		
+					break;		
 				} 
 				else if(temp=='!'){
 					printf("\ndebug echo:");
@@ -115,27 +115,38 @@ return;
 
 void turn_engine()
 {
-	int p,f;
+	int p,f,i,j;
 
-	for(p=0;p<2;p++){
-		f=player[p].load_point;
-		if(f>=0){
-			player[p].load-=player[p].work;
-			if(player[p].load<=0)
+	for(p=0;p<2;p++)
+	{
+		for(i=0;i< player[p].fun_num;i++)//fun loop
+		{
+			for(j=0;j<player[p].fpoint[i];j++)//digit loop
 			{
-				player[p].load=0;
-				player[p].load_point=-1;
-			player[p].fun[f][player[p].fpoint[f]]=player[p].new_fun;
-			player[p].fpoint[f]++;
-			}
-			
+				player[p].fun[i][j].value=extval(player[p].fun[i][j]);
+			}	
 		}
-	solver();
-	player[p].area+=player[p].value;
-	if(player[p].area>=10+pow(5,player[p].level)){
-		player[p].level++;
-		player[p].work*=2;
-	}
+	
+		f=player[p].load_point;
+			if(f>=0)
+			{
+				player[p].load-=player[p].work;
+				if(player[p].load<=0)
+				{
+					player[p].load=0;
+					player[p].load_point=-1;
+					player[p].fun[f][player[p].fpoint[f]]=player[p].new_fun;
+					player[p].fpoint[f]++;
+				}
+			
+			}
+		solver();
+		player[p].area+=player[p].value;
+			if(player[p].area>=10+pow(5,player[p].level))
+			{
+				player[p].level++;
+				player[p].work*=2;
+			}
 	}	
 	
 	
@@ -206,7 +217,7 @@ int editor_menu(int play_num,int fun){
 		}
 		for(i=0;i<maxvar;i++)
 		{
-			printf("%c \t %i\n",var[i].symbol,100);//(oper[new_digit.operator].cost_var%player[player].res)?(oper[new_digit.operator].cost_var/player[player].res)+1:oper[new_digit.operator].cost_var/player[player].res);
+			printf("%c \t %i\n",var[i].symbol,oper[new_digit.operator].cost_var);//(oper[new_digit.operator].cost_var%player[play_num].work)?(oper[new_digit.operator].cost_var/player[player].res)+1:oper[new_digit.operator].cost_var/player[play_num].work);
 		}
 		
 			

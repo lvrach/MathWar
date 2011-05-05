@@ -95,19 +95,19 @@ double fsolver(int p,int f)
 		switch (player[p].fun[f][i].operator)
 		{
 			case 0:
-			S+=extval(player[p].fun[f][i])	;	
+			S+=player[p].fun[f][i].value;	
 			break;		
 			case 1:
-			S-=extval(player[p].fun[f][i]);
+			S-=player[p].fun[f][i].value;
 			break;
 			case 2:
-			S*=extval(player[p].fun[f][i]);
+			S*=player[p].fun[f][i].value;
 			break;
 			case 3:
-			S/=extval(player[p].fun[f][i]);
+			S/=player[p].fun[f][i].value;
 			break;
 			case 4:
-			S=pow(S,extval(player[p].fun[f][i]));
+			S=pow(S,player[p].fun[f][i].value);
 			break;
 			default:
 			exit(1);
@@ -129,6 +129,10 @@ void add_digit(int play_num,int fun,struct DIGIT new){
 	}
 	else
 	{
+		if(new.operand==4)
+		{ 
+			new.value=rand()%10;	
+		}
 		player[play_num].load=oper[new.operator].cost_var ;
 	}
 	player[play_num].new_fun=new;

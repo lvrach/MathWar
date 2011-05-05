@@ -83,6 +83,10 @@ int local_multi(int players){
 					{
 						f=player[p].fun_num-1;
 						player[p].fun[f][player[p].fpoint[f]].operand=intvar(temps[0]);
+							if(intvar(temps[0])==4)
+							{ 
+								player[p].fun[f][player[p].fpoint[f]].value=rand()%10;	
+							}
 						player[p].fpoint[f]+=1;
 						break;
 					}
